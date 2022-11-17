@@ -3,8 +3,8 @@ const User = require('../models/User');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
+var jwt = require('jsonwebtoken');
+const fetchuser = require('../middlewear/fetchuser');
 
 
 JWT_SECRET = 'subrat  fjshfisnfiuohgfoinds'
@@ -116,6 +116,22 @@ router.post('/login', [
 })
 
 //ROUTE--3
-// Authenticate a User using: POST "/api/auth/login" . Does not requore auth no login requires
+// Get loggedin user detail using: POST "/api/auth/getuser" . Does not requore auth , login requires
+
+
+router.post('/getuser', fetchuser, async (req, res) => {
+
+    try {
+        userId = req.user.id
+        const user = await User.findById(userId).select("-password")  //select all the field except the password .
+        res.send(user);
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send("Enternal server Error")
+    }
+
+
+})
 
 module.exports = router
