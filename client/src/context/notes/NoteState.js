@@ -15,7 +15,7 @@ const NoteState = (props) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM2MjI5ZjA3OTlkMTZkYWZhYzFhYTA3In0sImlhdCI6MTY2NzQ2MTQ0NH0.osNYuWRP_QTbC0yPfU3CYbGj3crpuAw7YXpPLdOMV4g"
+                "auth-token": localStorage.getItem('token')
             },
 
         });
@@ -35,23 +35,14 @@ const NoteState = (props) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM2MjI5ZjA3OTlkMTZkYWZhYzFhYTA3In0sImlhdCI6MTY2NzQ2MTQ0NH0.osNYuWRP_QTbC0yPfU3CYbGj3crpuAw7YXpPLdOMV4g"
+                "auth-token": localStorage.getItem('token')
             },
             body: JSON.stringify({ title, description, tag })
         });
-        // const json = response.json();
-
-
-        const note = {
-            "_id": "636753dfc9c361ff4bf46f4a7",
-            "user": "636229f0799d16dafac1aa07d",
-            "title": title,
-            "description": description,
-            "tag": tag,
-            "Date": "2022-11-06T06:27:43.378Z",
-            "__v": 0
-        };
+        const note = await response.json();
         setNotes(notes.concat(note))
+
+
     }
     //DELETE A NOTE
     const deleteNote = async (id) => {
@@ -61,7 +52,7 @@ const NoteState = (props) => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM2MjI5ZjA3OTlkMTZkYWZhYzFhYTA3In0sImlhdCI6MTY2NzQ2MTQ0NH0.osNYuWRP_QTbC0yPfU3CYbGj3crpuAw7YXpPLdOMV4g"
+                "auth-token": localStorage.getItem('token')
             },
 
         });
@@ -84,23 +75,29 @@ const NoteState = (props) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM2MjI5ZjA3OTlkMTZkYWZhYzFhYTA3In0sImlhdCI6MTY2NzQ2MTQ0NH0.osNYuWRP_QTbC0yPfU3CYbGj3crpuAw7YXpPLdOMV4g"
+                "auth-token": localStorage.getItem('token')
             },
             body: JSON.stringify({ title, description, tag })
         });
         // eslint-disable-next-line
         const json = response.json();
 
+        //we cant change notes directly .. we have to create a newNote variable ..
+        let newNotes = JSON.parse(JSON.stringify(notes))
+        //JSON.parse it creates a deaf copy of notes.
+
         // logic to edit in client 
-        for (let index = 0; index < notes.length; index++) {
-            const element = notes[index];
+        for (let index = 0; index < newNotes.length; index++) {
+            const element = newNotes[index];
             if (element._id === id) {
-                element.title = title;
-                element.description = description;
-                element.id = id;
+                newNotes[index].title = title;
+                newNotes[index].description = description;
+                newNotes[index].tag = tag;
+                break;
             }
 
         }
+        setNotes(newNotes);
     }
     return (
         <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
