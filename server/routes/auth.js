@@ -113,7 +113,7 @@ router.post('/login', [
 
     } catch (error) {
 
-        console.log(error.message)
+        // console.log(error.message)
         res.status(500).send("Enternal server Error")
     }
 
@@ -131,7 +131,7 @@ router.post('/getuser', fetchuser, async (req, res) => {
         res.send(user);
 
     } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         res.status(500).send("Enternal server Error")
     }
 

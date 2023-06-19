@@ -16,7 +16,7 @@ router.get('/fetchallnotes', fetchuser,
 
         } catch (error) {
 
-            console.log(error.message)
+            // console.log(error.message)
             res.status(500).send("Enternal server Error")
 
         }
@@ -78,7 +78,7 @@ router.post('/addnote', fetchuser, [
 
         } catch (error) {
 
-            console.log(error.message)
+            // console.log(error.message)
             res.status(500).send("Enternal server Error")
         }
     })
@@ -106,7 +106,7 @@ router.put('/updatenote/:id', fetchuser,
             res.json({ note });
         } catch (error) {
 
-            console.log(error.message)
+            // console.log(error.message)
             res.status(500).send("Enternal server Error")
 
         }
@@ -133,7 +133,7 @@ router.delete('/deletenote/:id', fetchuser,
             res.json({ "Success": "Note has been deleted", note: note });
         } catch (error) {
 
-            console.log(error.message)
+            // console.log(error.message)
             res.status(500).send("Enternal server Error")
 
         }

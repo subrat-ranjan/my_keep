@@ -3,7 +3,7 @@ import NoteContext from "./noteContext";
 // import { useState } from "react";
 
 const NoteState = (props) => {
-    const host = "http://localhost:5000"
+    const host = "https://keep-be.onrender.com"
     const notesInitial = []
     const [notes, setNotes] = useState(notesInitial)
 
@@ -21,7 +21,7 @@ const NoteState = (props) => {
         });
         // const json = response.json();
         const json = await response.json()
-        console.log(json)
+        // console.log(json)
         setNotes(json)
     }
 
@@ -60,7 +60,7 @@ const NoteState = (props) => {
         console.log(json);
 
 
-        console.log("deleting the note with id " + id)
+        // console.log("deleting the note with id " + id)
         const newNotes = notes.filter((note) => {
             return note._id !== id
         })
