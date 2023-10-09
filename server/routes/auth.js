@@ -22,18 +22,14 @@ router.post('/createuser', [
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-
     try {
-
         // cheak whether the user with this email exist already
-
-
         let user = await User.findOne({ email: req.body.email });
         if (user) {
-            return res.status(400).json({ success, error: "Sorry a user with this email already exist " })
+            return res.status(400).json({ success: false, error: "Sorry a user with this email already exist " })
         }
 
         const salt = bcrypt.genSaltSync(10);
@@ -98,7 +94,7 @@ router.post('/login', [
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
             success = false;
-            return res.status(400).json({ success, error: "Please try to login with correct credentials" })
+            return res.status(400).json({ success: false, error: "Please try to login with correct credentials" })
         }
 
         const data = {
